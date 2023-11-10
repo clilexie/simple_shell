@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Function to handle interactive mode
+interactive_mode() {
+    while true; do
+        read -p "(\$) " command
+        case "$command" in
+            "exit")
+                break
+                ;;
+            *)
+                eval "$command"
+                ;;
+        esac
+    done
+}
+
+# Function to handle non-interactive mode
+non_interactive_mode() {
+    while read -r command; do
+        eval "$command"
+    done
+}
+
+# Check if the script is running in non-interactive mode (piped input)
+if [ ! -t 0 ]; then
+    non_interactive_mode
+else
+    interactive_mode
+fi
